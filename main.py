@@ -4,6 +4,8 @@ from PIL import Image
 import pytesseract
 from io import BytesIO
 
+import os
+print("PORT environment variable:", os.environ.get("PORT"))
 
 # Inisialisasi aplikasi FastAPI
 app = FastAPI(title="OCR API", description="API untuk ekstraksi teks dari gambar.")
