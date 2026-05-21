@@ -1,23 +1,30 @@
-# 1. Gunakan base image Python versi slim (ringan)
+# Menggunakan Python versi 3.12 ringan
 FROM python:3.12-slim
 
-# 2. Instal Tesseract OCR, file bahasa Inggris, dan library development-nya
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Install Tesseract OCR dan tools sistem yang diperlukan
+RUN apt-get update && apt-get install -y --no-install-recommends \
     tesseract-ocr \
     tesseract-ocr-eng \
-    libtesseract-dev && \
-    rm -rf /var/lib/apt/lists/*
+    libtesseract-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# 3. Set working directory di dalam container
+# Set working directory di dalam container
 WORKDIR /app
 
-# 4. Salin file daftar dependensi Python dan instal
+# Copy file requirements dan install dependencies Python
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Salin semua kode aplikasi
+# Copy seluruh kode aplikasi
 COPY . .
 
-# 6. Gunakan shell form agar $PORT dievaluasi
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Expose port (Railway akan menggantinya dengan variabel PORT)
+EXPOSE 8000
+
+# Jalankan aplikasi dengan shell form agar variabel PORT bisa dievaluasi
+# Catatan: Railway akan menyuntikkan variabel environment PORT
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT}
