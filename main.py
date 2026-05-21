@@ -33,7 +33,7 @@ def preprocess_image(img):
     enhancer = ImageEnhance.Sharpness(img)
     img = enhancer.enhance(1.5)          # tingkatkan ketajaman
     # Threshold: nilai < 150 jadi hitam, >= 150 jadi putih
-    threshold = 150
+    threshold = 120
     img = img.point(lambda p: 0 if p < threshold else 255, '1')
     return img
 
@@ -55,7 +55,7 @@ async def extract_text(file: UploadFile = File(...)):
         
         # Konfigurasi Tesseract: --psm 6 (satu blok teks homogen), --oem 3 (LSTM + legacy)
         custom_config = r'--oem 3 --psm 6'
-        extracted_text = pytesseract.image_to_string(img, lang='ind+eng', config=custom_config)
+        extracted_text = pytesseract.image_to_string(img, lang='ind', config=custom_config)
         
         # Bersihkan teks (opsional: hapus spasi berlebih)
         cleaned_text = ' '.join(extracted_text.split())
