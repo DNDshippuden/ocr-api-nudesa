@@ -18,6 +18,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+async def startup_event():
+    print("=" * 50)
+    print("Available Tesseract languages:")
+    print(pytesseract.get_languages())
+    print("=" * 50)
+
 # 4. Fungsi preprocessing gambar
 def preprocess_image(img):
     """
@@ -55,7 +62,7 @@ async def extract_text(file: UploadFile = File(...)):
         
         # Konfigurasi Tesseract: --psm 6 (satu blok teks homogen), --oem 3 (LSTM + legacy)
         custom_config = r'--oem 3 --psm 6'
-        extracted_text = pytesseract.image_to_string(img, lang='ind', config=custom_config)
+        extracted_text = pytesseract.image_to_string(img, lang='ind+eng', config=custom_config)
         
         # Bersihkan teks (opsional: hapus spasi berlebih)
         cleaned_text = ' '.join(extracted_text.split())

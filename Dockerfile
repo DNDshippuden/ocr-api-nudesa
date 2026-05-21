@@ -9,6 +9,7 @@ ENV PYTHONUNBUFFERED=1
 RUN apt-get update && apt-get install -y --no-install-recommends \
     tesseract-ocr \
     tesseract-ocr-eng \
+    tesseract-ocr-ind \ 
     libtesseract-dev \
     && rm -rf /var/lib/apt/lists/*
 
