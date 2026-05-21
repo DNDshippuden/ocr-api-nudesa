@@ -19,5 +19,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 5. Salin semua kode aplikasi
 COPY . .
 
-# 6. Perintah untuk menjalankan aplikasi (sesuaikan dengan nama file app Anda)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "$PORT"]
+# 6. Gunakan shell form agar $PORT dievaluasi
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT
